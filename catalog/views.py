@@ -4,7 +4,7 @@ from django.shortcuts import render
 
 # Create your views here.
 def home(request):
-    return render(request, "home.html")
+    return render(request, "catalog/home.html")
 
 
 def contact(request):
@@ -19,4 +19,4 @@ def contact(request):
         print(phone)
         print(message)
         return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
-    return render(request, "contact.html")
+    return render(request, "catalog/contact.html")
