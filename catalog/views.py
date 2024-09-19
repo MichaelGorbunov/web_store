@@ -32,18 +32,19 @@ def contact(request):
         # return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
         return render(request, 'send.html',context=data)
 
-    contact = Contact.objects.all()
-    if len(contact) != 0:
-
-        data = {"country": contact[0].country,
-                "tax_num": contact[0].tax_reg_number,
-                "address": contact[0].address,
-                "phone": contact[0].phone
-                }
-    else:
+    # contact = Contact.objects.all()
+    contact = Contact.objects.first()
+    if contact is None:
         data = {"country": "не указано",
                 "tax_num": "не указано",
                 "address": "не указано",
                 "phone": "не указано"
+                }
+
+    else:
+        data = {"country": contact.country,
+                "tax_num": contact.tax_reg_number,
+                "address": contact.address,
+                "phone": contact.phone
                 }
     return render(request, "contact.html",context=data)
