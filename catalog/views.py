@@ -1,10 +1,16 @@
 from django.http import HttpResponse
 from django.shortcuts import render
-from catalog.models import Contact
+from catalog.models import Contact,Product
 
 
 # Create your views here.
 def home(request):
+
+    # products = Product.objects.all()
+    #вывод в консоль списка продуктов
+    products = Product.objects.all().order_by('-id')[:5:-1]
+    for product in products:
+        print(product.name)
     return render(request, "home.html")
 
 
