@@ -25,7 +25,8 @@ def contact(request):
         print(name)
         print(phone)
         print(message)
-        return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
+        # return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
+        return render(request, 'send.html')
 
     contact = Contact.objects.all()
     if len(contact) != 0:
