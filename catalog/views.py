@@ -13,6 +13,9 @@ def home(request):
         print(product.name)
     return render(request, "home.html")
 
+def send(request):
+    return render(request, "send.html")
+
 
 def contact(request):
     if request.method == "POST":
@@ -25,8 +28,9 @@ def contact(request):
         print(name)
         print(phone)
         print(message)
+        data={"name":name}
         # return HttpResponse(f"Спасибо, {name}! Ваше сообщение получено.")
-        return render(request, 'send.html')
+        return render(request, 'send.html',context=data)
 
     contact = Contact.objects.all()
     if len(contact) != 0:
