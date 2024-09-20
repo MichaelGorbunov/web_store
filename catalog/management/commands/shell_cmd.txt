@@ -1,0 +1,70 @@
+
+
+products = Product.objects.all()
+for product in products:
+    print(product.name, product.price, product.category)
+
+python -Xutf8 manage.py dumpdata catalog.Category catalog.Product --output catalog_fixture.json --indent 4
+python manage.py loaddata catalog_fixture.json --format json
+
+python -Xutf8 manage.py dumpdata catalog.Category  --output category_fixture.json --indent 4
+python -Xutf8 manage.py dumpdata catalog.Product  --output product_fixture.json --indent 4
+
+
+from catalog.models import Product, Category
+fruct_product = Product.objects.filter(category__name='Фрукты')
+for fruct in fruct_product:
+    print(fruct.name)
+
+
+from catalog.models import Product, Category
+categoryes = Category.objects.all()
+for category in categoryes:
+    print(category.name, category.description)
+	
+
+products = Product.objects.all()
+for product in products:
+    print(product.name,product.category)
+
+
+vegetable_product = Product.objects.filter(category__name='Овощи')
+for vegetable in vegetable_product:
+    print(vegetable.name)
+
+
+print(vars(product))
+
+
+from catalog.models import Product
+product = Product.objects.get(name='Картофель')
+print(product)
+product.price=100500
+product.save()
+
+from catalog.models import Contact
+contacts = Contact.objects.all()
+for contact in contacts:
+    print(contact.country, contact.tax_reg_number, contact.address,contact.phone)
+	
+
+contact = Contact.objects.filter(id=1)
+
+python -Xutf8 manage.py dumpdata catalog.Contact --output contact_fixture.json --indent 4
+python manage.py loaddata contact_fixture.json --format json
+
+
+from catalog.models import Product, Category
+# Создаем категории
+category1 = Category.objects.create(name='Фрукты')
+category2 = Category.objects.create(name='Овощи')
+category3 = Category.objects.create(name='Зелень')
+# Создаем продукты
+product1 = Product.objects.create(name='Яблоко',category=category1)
+product1 = Product.objects.create(name='Лимон',category=category1)
+product1 = Product.objects.create(name='Груша',category=category1)
+product1 = Product.objects.create(name='Морковь',category=category2)
+product1 = Product.objects.create(name='Свекла',category=category2)
+product1 = Product.objects.create(name='Картофель',category=category2)
+product1 = Product.objects.create(name='Укроп',category=category3)
+product1 = Product.objects.create(name='Кинза',category=category3)

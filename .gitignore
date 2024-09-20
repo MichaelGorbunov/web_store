@@ -164,3 +164,8 @@ cython_debug/
 #mgorby
 di4/
 /poetry.lock
+/lint.cmd
+/lint_add.cmd
+/db.sqlite3
+
+
