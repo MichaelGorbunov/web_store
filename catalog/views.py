@@ -1,7 +1,9 @@
-from django.http import HttpResponse
+from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
 from catalog.models import Contact,Product
 from django.core.paginator import Paginator
+from catalog.form import Form_Add_Product
+from django.urls import reverse
 
 
 # Create your views here.
@@ -85,3 +87,31 @@ def page_nav(request):
     page_object = paginator.get_page(page_number)
     context = {'page_obj': page_object}
     return render(request, 'catalog/page_nav.html', context)
+
+def add_product(request):
+    if request.method == 'POST':
+        form = Form_Add_Product(request.POST, request.FILES)
+        if form.is_valid():
+
+            # получить данные из формы
+            name = form.cleaned_data.get("name")
+            description = form.cleaned_data.get("description")
+            photo = form.cleaned_data.get("photo")
+            category = form.cleaned_data.get("category")
+            # создать объект для записи в БД
+            obj = Product.objects.create(
+                category_id=category.id,
+                name=name,
+                description=description,
+                photo=photo)
+            # сохранить полученные данные
+            obj.save()
+            # загрузить страницу со списком автором
+            # return HttpResponseRedirect(reverse('products_list2'))
+            return HttpResponseRedirect('/catalog/products_list2')
+
+    else:
+
+        form = Form_Add_Product()
+        context = {"form": form}
+        return render(request, "catalog/add_product.html", context)

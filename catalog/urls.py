@@ -17,4 +17,5 @@ urlpatterns = [
     path("catalog/base/", views.base, name="base"),
     path("catalog/products_list2/", views.products_list2, name="products_list2"),
     path("catalog/page_nav/", views.page_nav, name="page_nav"),
+    path("catalog/add_product/", views.add_product, name="add_product"),
 ]
