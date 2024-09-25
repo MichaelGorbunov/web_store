@@ -1,6 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render,get_object_or_404
 from catalog.models import Contact,Product
+from django.core.paginator import Paginator
 
 
 # Create your views here.
@@ -74,3 +75,13 @@ def products_list2(request):
     products = Product.objects.order_by("-price")
     context = {'products': products}
     return render(request, 'catalog/products_list2.html', context)
+
+def page_nav(request):
+
+    # products = Product.objects.all()
+    products = Product.objects.order_by("price")
+    paginator = Paginator(products, per_page=2)
+    page_number = request.GET.get('page')
+    page_object = paginator.get_page(page_number)
+    context = {'page_obj': page_object}
+    return render(request, 'catalog/page_nav.html', context)
