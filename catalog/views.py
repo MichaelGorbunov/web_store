@@ -96,17 +96,20 @@ def add_product(request):
             # получить данные из формы
             name = form.cleaned_data.get("name")
             description = form.cleaned_data.get("description")
-            photo = form.cleaned_data.get("photo")
+            # photo = form.cleaned_data.get("photo")
+            price=form.cleaned_data.get("price")
             category = form.cleaned_data.get("category")
             # создать объект для записи в БД
             obj = Product.objects.create(
                 category_id=category.id,
                 name=name,
                 description=description,
-                photo=photo)
+                price=price
+                # photo=photo
+                )
             # сохранить полученные данные
             obj.save()
-            # загрузить страницу со списком автором
+
             # return HttpResponseRedirect(reverse('products_list2'))
             return HttpResponseRedirect('/catalog/products_list2')
 
