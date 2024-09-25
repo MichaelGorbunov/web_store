@@ -66,3 +66,6 @@ def products_list(request):
     products = Product.objects.order_by("name")
     context = {'products': products}
     return render(request, 'catalog/products_list.html', context)
+
+def base(request):
+    return render(request, "catalog/base.html")
