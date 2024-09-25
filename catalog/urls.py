@@ -13,4 +13,5 @@ urlpatterns = [
     path("catalog/contact/", contact, name="contact"),
     path("catalog/send/", send, name="send"),
     path("catalog/product_detail/<int:product_id>/", views.product_detail, name="product_detail"),
+    path("catalog/products_list/", views.products_list, name="products_list"),
 ]
