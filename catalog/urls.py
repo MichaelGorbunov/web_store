@@ -15,4 +15,5 @@ urlpatterns = [
     path("catalog/product_detail/<int:product_id>/", views.product_detail, name="product_detail"),
     path("catalog/products_list/", views.products_list, name="products_list"),
     path("catalog/base/", views.base, name="base"),
+    path("catalog/products_list2/", views.products_list2, name="products_list2"),
 ]
