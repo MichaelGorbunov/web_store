@@ -15,8 +15,9 @@ class PostListView(ListView):
     template_name = 'blog/posts_list.html'
     context_object_name = 'posts'
     def get_queryset(self):
-        queryset = super().get_queryset()
-        return queryset.order_by("-id")
+        # queryset = super().get_queryset().filter(published=True)
+        # return queryset.order_by("-id")
+        return Post.objects.filter(published=True)
 
 
 class PostDetailView(DetailView):
