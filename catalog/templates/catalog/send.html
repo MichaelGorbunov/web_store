@@ -6,17 +6,26 @@
 
 <div class="row text-center">
     <div class="col-6">
-        <div class="card start-50">
+    <div class="card  box-shadow start-50">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">Спасибо за обращение!</h4>
+                </div>
+
+
+
+
 
             <div class="card-body">
                 <h4> {{name}}, Ваши данные были переданы</h4>
-                <button class="btn btn-lg btn-block btn-outline-primary" type="button">
+                <button class="btn mt-3 btn-lg btn-block btn-outline-primary" type="button">
                     <a class="nav-link" href="{% url 'catalog:product_list' %}">Вернуться в каталог</a>
 
                 </button>
             </div>
         </div>
+
     </div>
+
 </div>
 
 
