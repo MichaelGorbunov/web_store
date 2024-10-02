@@ -1,0 +1,27 @@
+<!-- post_detail.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Детали поста</title>
+    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="mb-4">{{ post.title }}</h1>
+        <p>{{ post.body }}</p>
+        <img src=/media/{{post.preview}} class="img-thumbnail">
+        <p>Дата публикации :{{ post.created_at }}</p>
+        <p>Пост опубликован :{{ post.published }}</p>
+        <p>Количество просмотров :{{ post.views_count }}</p>
+
+
+        <a href="{% url 'blog:post_edit' post.pk %}" class="btn btn-secondary">Редактировать</a>
+        <a href="{% url 'blog:post_delete' post.pk %}" class="btn btn-danger">Удалить</a>
+        <a href="{% url 'blog:posts_list' %}" class="btn btn-primary">Вернуться к списку</a>
+
+
+
+    </div>
+    <script src="/static/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
