@@ -1,0 +1,62 @@
+[
+{
+    "model": "blog.post",
+    "pk": 1,
+    "fields": {
+        "title": "CRUD - основы ORM по работе с моделями",
+        "body": "Create – создание;\r\nRead – чтение;\r\nUpdate – изменение;\r\nDelete – удаление.",
+        "preview": "photos/default.jpg",
+        "created_at": "2024-10-02T12:41:37.604Z",
+        "published": true,
+        "views_count": 2
+    }
+},
+{
+    "model": "blog.post",
+    "pk": 2,
+    "fields": {
+        "title": "Класс CreateView",
+        "body": "Класс CreateView - используется для создания нового объекта. Он автоматически обрабатывает форму и сохраняет данные в базу.",
+        "preview": "photos/default.jpg",
+        "created_at": "2024-10-02T12:45:51.070Z",
+        "published": true,
+        "views_count": 0
+    }
+},
+{
+    "model": "blog.post",
+    "pk": 3,
+    "fields": {
+        "title": "Класс ListView",
+        "body": "Класс ListView - используется для отображения списка объектов. Он автоматически получает набор данных и передает его в шаблон.",
+        "preview": "photos/default.jpg",
+        "created_at": "2024-10-02T12:46:39.521Z",
+        "published": true,
+        "views_count": 1
+    }
+},
+{
+    "model": "blog.post",
+    "pk": 4,
+    "fields": {
+        "title": "Класс DetailView",
+        "body": "Класс DetailView - используется для отображения деталей конкретного объекта. Он автоматически получает объект по первичному ключу и передает его в шаблон.",
+        "preview": "photos/default.jpg",
+        "created_at": "2024-10-02T12:47:20.851Z",
+        "published": true,
+        "views_count": 2
+    }
+},
+{
+    "model": "blog.post",
+    "pk": 5,
+    "fields": {
+        "title": "Класс UpdateView",
+        "body": "Класс UpdateView- используется для обновления существующего объекта. Он автоматически обрабатывает форму и сохраняет изменения в базе.",
+        "preview": "photos/default.jpg",
+        "created_at": "2024-10-02T12:47:56.721Z",
+        "published": true,
+        "views_count": 1
+    }
+}
+]

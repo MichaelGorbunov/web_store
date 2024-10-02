@@ -6,6 +6,7 @@ from .models import Post
 
 
 class PostCreateView(CreateView):
+    """создание поста"""
     model = Post
     fields = ['title', 'body', 'preview']
     template_name = 'blog/post_form.html'
@@ -13,6 +14,7 @@ class PostCreateView(CreateView):
 
 
 class PostListView(ListView):
+    """список постов"""
     model = Post
     template_name = 'blog/posts_list.html'
     context_object_name = 'posts'
@@ -24,32 +26,35 @@ class PostListView(ListView):
 
 
 class PostDetailView(DetailView):
+    """детальное описание поста"""
     model = Post
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
     def get_object(self):
-        # Переопределение метода get_object для настройки логики выбора объекта
+        # Переопределение метода get_object
         obj = super().get_object()
-        # Дополнительная логика (например,  изменения значений полей)
-        # if not obj.is_active:
-        #     raise Http404("Object not found")
         obj.views_count = obj.views_count + 1
         obj.save()
         return obj
 
 
 class PostUpdateView(UpdateView):
+    """обновление поста"""
     model = Post
     fields = ["title", "body", "published", "views_count"]
     template_name = 'blog/post_form.html'
-    success_url = reverse_lazy('blog:posts_list')
+    # success_url = reverse_lazy('blog:posts_list')
+    def get_success_url(self):
+        pk = self.kwargs["pk"]
+        return reverse_lazy("blog:post_detail", kwargs={"pk": pk})
 
 
 # Create your views here.
 
 
 class PostDeleteView(DeleteView):
+    """удаление поста"""
     model = Post
     template_name = 'blog/post_confirm_delete.html'
     success_url = reverse_lazy('blog:posts_list')
