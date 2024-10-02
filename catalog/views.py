@@ -7,14 +7,7 @@ from django.urls import reverse
 
 
 # Create your views here.
-def home(request):
 
-    # products = Product.objects.all()
-    #вывод в консоль списка продуктов
-    # products = Product.objects.all().order_by('-id')[:5:-1]
-    # for product in products:
-    #     print(product.name)
-    return render(request, "catalog/home.html")
 
 def send(request):
     return render(request, "catalog/send.html")
@@ -65,28 +58,17 @@ def product_detail(request, product_id):
     # print(data)
     return render(request, "catalog/product_detail.html", context=data)
 
-def products_list(request):
-    products = Product.objects.order_by("name")
-    context = {'products': products}
-    return render(request, 'catalog/products_list.html', context)
+
 
 def base(request):
     return render(request, "catalog/base.html")
 
-def products_list2(request):
+def products_list(request):
     products = Product.objects.order_by("-price")
     context = {'products': products}
-    return render(request, 'catalog/products_list2.html', context)
+    return render(request, 'catalog/products_list.html', context)
 
-def page_nav(request):
 
-    # products = Product.objects.all()
-    products = Product.objects.order_by("price")
-    paginator = Paginator(products, per_page=2)
-    page_number = request.GET.get('page')
-    page_object = paginator.get_page(page_number)
-    context = {'page_obj': page_object}
-    return render(request, 'catalog/page_nav.html', context)
 
 def add_product(request):
     if request.method == 'POST':
@@ -118,3 +100,13 @@ def add_product(request):
         form = Form_Add_Product()
         context = {"form": form}
         return render(request, "catalog/add_product.html", context)
+
+# def page_nav(request):
+#
+#     # products = Product.objects.all()
+#     products = Product.objects.order_by("price")
+#     paginator = Paginator(products, per_page=2)
+#     page_number = request.GET.get('page')
+#     page_object = paginator.get_page(page_number)
+#     context = {'page_obj': page_object}
+#     return render(request, 'catalog/page_nav.html', context)

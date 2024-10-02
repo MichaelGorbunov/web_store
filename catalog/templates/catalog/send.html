@@ -1,35 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width-device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/bootstrap.min.css">
-    <title>Данные переданы</title>
-</head>
-<body>
-    <div class="row text-center mt-5">
-        <div class="col-3"></div>
-        <div class="col-6">
-            <div class="container">
-                <div class="card">
-                    <div class="card-title">
-                        <h1>{{name}},Ваши данные были переданы</h1>
-                    </div>
+{% extends 'catalog/base.html' %}
 
-                    <div class="card-body">
-                        <button class="btn btn-lg btn-block btn-outline-primary" type="button">
-                            <a class="nav-link" href="{% url 'catalog:home' %}">Вернуться на сайт</a>
+{% block title %}Данные переданы{% endblock %}
 
-                        </button>
-                    </div>
-                </div>
+{% block content %}
 
+<div class="row text-center">
+    <div class="col-6">
+        <div class="card start-50">
+
+            <div class="card-body">
+                <h4> {{name}}, Ваши данные были переданы</h4>
+                <button class="btn btn-lg btn-block btn-outline-primary" type="button">
+                    <a class="nav-link" href="{% url 'catalog:product_list' %}">Вернуться в каталог</a>
+
+                </button>
             </div>
         </div>
-        <div class="col-3"></div>
-
     </div>
+</div>
 
-    <script src="/static/js/bootstrap.bundle.min.js"></script>
-</body>
-</html>
+
+{% endblock %}
