@@ -53,9 +53,12 @@ class PostUpdateView(UpdateView):
     template_name = 'blog/post_form.html'
 
     # success_url = reverse_lazy('blog:posts_list')
+    # def get_success_url(self):
+    #     pk = self.kwargs["pk"]
+    #     return reverse_lazy("blog:post_detail", kwargs={"pk": pk})
     def get_success_url(self):
-        pk = self.kwargs["pk"]
-        return reverse_lazy("blog:post_detail", kwargs={"pk": pk})
+        return reverse_lazy("blog:post_detail",args=[self.kwargs.get("pk")])
+
 
 
 # Create your views here.
