@@ -1,10 +1,10 @@
 from django.http import HttpResponse,HttpResponseRedirect
 from django.shortcuts import render,get_object_or_404
 from catalog.models import Contact,Product
-from django.core.paginator import Paginator
+# from django.core.paginator import Paginator
 from catalog.form import Form_Add_Product
 from django.urls import reverse
-
+from django.views.generic import DetailView
 
 # Create your views here.
 
@@ -45,18 +45,13 @@ def contact(request):
                 }
     return render(request, "catalog/contact.html",context=data)
 
-def product_detail(request, product_id):
-    # product=Product.objects.get(id=1)
-    product = get_object_or_404(Product, pk=product_id)
-    data = {
-        "product_name": product.name,
-        "product_cat": product.category,
-        "product_price": product.price,
-        "product_descr": product.description,
-        "product_img": product.photo,
-    }
-    # print(data)
-    return render(request, "catalog/product_detail.html", context=data)
+
+class ProductDetailView(DetailView):
+    model = Product
+    template_name = 'catalog/product_detail.html'
+    context_object_name = 'product'
+
+
 
 
 
@@ -110,3 +105,16 @@ def add_product(request):
 #     page_object = paginator.get_page(page_number)
 #     context = {'page_obj': page_object}
 #     return render(request, 'catalog/page_nav.html', context)
+
+# def product_detail(request, product_id):
+#     # product=Product.objects.get(id=1)
+#     product = get_object_or_404(Product, pk=product_id)
+#     data = {
+#         "product_name": product.name,
+#         "product_cat": product.category,
+#         "product_price": product.price,
+#         "product_descr": product.description,
+#         "product_img": product.photo,
+#     }
+#     # print(data)
+#     return render(request, "catalog/product_detail.html", context=data)

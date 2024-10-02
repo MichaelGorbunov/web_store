@@ -8,17 +8,19 @@
         <div class="col-6 ">
             <div class="card mb-4 box-shadow start-50">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">{{product_name}} </h4>
+                    <h4 class="my-0 font-weight-normal">{{product.name}} </h4>
                 </div>
                 <div class="card-body">
-                    <h1 class="card-title pricing-card-title">$ {{product_price}}</h1>
-                    <p class="card-text">{{product_descr}}</p>
+                    <h1 class="card-title pricing-card-title">$ {{product.price}}</h1>
+                    <p class="card-text">{{product.description}}</p>
 
-                    <img src=/media/{{product_img}} class="img-thumbnail">
-                    <h6 class="font-weight-normal">Категория: {{product_cat}} </h6>
+                    <img src=/media/{{product.photo}} class="img-thumbnail">
+                    <h6 class="font-weight-normal">Категория: {{product.category.name}} </h6>
                     <button type="button" class="btn btn-lg btn-block btn-outline-primary">Купить</button>
                 </div>
             </div>
         </div>
    </div>
 {% endblock %}
+
+
