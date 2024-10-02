@@ -12,7 +12,6 @@ urlpatterns = [
     path("", ProductsListView.as_view(), name="product_list"),
     path("catalog/", ProductsListView.as_view(), name="product_list"),
     path("catalog/contact/", ContactListView.as_view(), name="contact"),
-    path("catalog/send/", send, name="send"),
     path("catalog/product_detail/<int:pk>/", ProductDetailView.as_view(), name='product_detail')
 
 ]
