@@ -8,7 +8,7 @@ class Post(models.Model):
     preview = models.ImageField(upload_to='photos/', null=True, blank=True, default="photos/default.jpg",verbose_name='Изображение')
     created_at = models.DateTimeField(verbose_name='Дата публикации', auto_now_add=True)
     published = models.BooleanField(verbose_name='Статус публикации', default=True)
-    views_count = models.IntegerField(default=0, verbose_name='Количество просмотров')
+    views_count = models.PositiveIntegerField(default=0, verbose_name='Количество просмотров')
 
     def __str__(self):
         return f'{self.title}'
