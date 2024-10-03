@@ -31,24 +31,34 @@ class PostDetailView(DetailView):
     template_name = 'blog/post_detail.html'
     context_object_name = 'post'
 
-    def get_object(self):
+    # def get_object(self):
+    #     # Переопределение метода get_object
+    #     obj = super().get_object()
+    #     obj.views_count = obj.views_count + 1
+    #     obj.save()
+    #     return obj
+
+    def get_object(self, queryset=None):
         # Переопределение метода get_object
-        obj = super().get_object()
-        obj.views_count = obj.views_count + 1
-        obj.save()
-        return obj
+        self.object = super().get_object(queryset)
+        self.object.views_count += 1
+        self.object.save()
+        return self.object
 
 
 class PostUpdateView(UpdateView):
     """обновление поста"""
     model = Post
-    fields = ["title", "body", "published", "views_count"]
+    fields = ["title", "body", "published", "preview", "views_count"]
     template_name = 'blog/post_form.html'
 
     # success_url = reverse_lazy('blog:posts_list')
+    # def get_success_url(self):
+    #     pk = self.kwargs["pk"]
+    #     return reverse_lazy("blog:post_detail", kwargs={"pk": pk})
     def get_success_url(self):
-        pk = self.kwargs["pk"]
-        return reverse_lazy("blog:post_detail", kwargs={"pk": pk})
+        return reverse_lazy("blog:post_detail",args=[self.kwargs.get("pk")])
+
 
 
 class PostDeleteView(DeleteView):
