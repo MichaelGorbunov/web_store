@@ -1,4 +1,5 @@
-from django.urls import path,re_path
+# from django.urls import path,re_path
+from django.urls import path
 from .views import PostListView, PostCreateView, PostUpdateView, PostDetailView, PostDeleteView, PostList2View
 from blog.apps import BlogConfig
 
