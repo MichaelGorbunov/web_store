@@ -16,6 +16,7 @@ class PostCreateView(CreateView):
 class PostListView(ListView):
     """список постов"""
     model = Post
+
     template_name = 'blog/posts_list.html'
     context_object_name = 'posts'
 
@@ -66,3 +67,17 @@ class PostDeleteView(DeleteView):
     model = Post
     template_name = 'blog/post_confirm_delete.html'
     success_url = reverse_lazy('blog:posts_list')
+
+
+class PostList2View(ListView):
+    """список постов"""
+    model = Post
+    paginate_by = 3
+
+    template_name = 'blog/posts_list2.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        # queryset = super().get_queryset().filter(published=True)
+        # return queryset.order_by("-id")
+        return Post.objects.filter(published=True)
