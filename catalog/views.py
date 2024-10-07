@@ -22,6 +22,17 @@ class ContactListView(ListView):
     def get_queryset(self):
         queryset = super().get_queryset()
         return queryset.first()  # вывод первого
+    def post(self, request, *args, **kwargs):
+        self.object_list = self.get_queryset()
+        context = self.get_context_data()
+        name = self.request.POST.get('name')
+        email = self.request.POST.get('phone')
+        message = self.request.POST.get('message')
+        print(f'You have new message from {name}({email}): {message}')
+
+        return self.render_to_response(context)
+
+
 
 
 class ProductDetailView(DetailView):

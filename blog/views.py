@@ -26,6 +26,8 @@ class PostListView(ListView):
         return Post.objects.filter(published=True)
 
 
+
+
 class PostDetailView(DetailView):
     """детальное описание поста"""
     model = Post
