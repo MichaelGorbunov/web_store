@@ -147,7 +147,7 @@ EMAIL_USE_SSL = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 EMAIL_SERVER = EMAIL_HOST_USER
 EMAIL_ADMIN = EMAIL_HOST_USER
-RECIPIENTS_EMAIL = [os.getenv('RECIPIENTS_EMAIL')]
+RECIPIENTS_EMAIL = os.getenv('RECIPIENTS_EMAIL').split(",")
 # EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 #выводим в консоль
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
