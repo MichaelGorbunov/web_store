@@ -112,14 +112,18 @@ scheduler.add_job(
     jobstore="default",
     replace_existing=True)
 
-scheduler.add_job(
-    test_job2,
-    "interval",
-    seconds=13,
-    id='task2_time',
-    jobstore="default",
-    replace_existing=True)
+# scheduler.add_job(
+#     test_job2,
+#     "interval",
+#     seconds=13,
+#     id='task2_time',
+#     jobstore="default",
+#     replace_existing=True)
+
+scheduler.add_job(test_job2, 'cron', hour=13, minute='*', second='*/5' ,jitter=3,id='task2_time',jobstore="default",replace_existing=True)
+
 
 #  Scheduler starts
 scheduler.start()
+scheduler.print_jobs()
 
