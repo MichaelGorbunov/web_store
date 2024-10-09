@@ -96,18 +96,30 @@ scheduler.add_jobstore(DjangoJobStore(), "default")
 # print(scheduler.get_job('task_time'))
 # @register_job(scheduler, "interval", seconds=25, id='task_time')
 def test_job():
-    t_now = datetime.now()
-    print(t_now)
+    # t_now = datetime.now()
+    print("task1")
+
+def test_job2():
+    # t_now = datetime.now()
+    print("task2")
 
 
 scheduler.add_job(
     test_job,
     "interval",
-    seconds=25,
-    id='task_time',
+    seconds=17,
+    id='task1_time',
+    jobstore="default",
+    replace_existing=True)
+
+scheduler.add_job(
+    test_job2,
+    "interval",
+    seconds=13,
+    id='task2_time',
     jobstore="default",
     replace_existing=True)
 
 #  Scheduler starts
 scheduler.start()
-print(scheduler.get_job('task_time'))
+
