@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "catalog",
-    "blog"
+    "blog",
+    "django_apscheduler",
+
 ]
 
 MIDDLEWARE = [
@@ -51,6 +53,7 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -154,3 +157,8 @@ RECIPIENTS_EMAIL = os.getenv('RECIPIENTS_EMAIL').split(",")
 # на почту
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH=os.path.join(BASE_DIR, "mail")
+
+
+SCHEDULER_AUTOSTART = True
+
+

@@ -3,6 +3,9 @@ from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic import ListView, DetailView
 from .models import Post
+from apscheduler.schedulers.background import BackgroundScheduler
+from django_apscheduler.jobstores import DjangoJobStore, register_job
+from datetime import datetime
 
 
 class PostCreateView(CreateView):
@@ -24,8 +27,6 @@ class PostListView(ListView):
         # queryset = super().get_queryset().filter(published=True)
         # return queryset.order_by("-id")
         return Post.objects.filter(published=True)
-
-
 
 
 class PostDetailView(DetailView):
@@ -60,8 +61,7 @@ class PostUpdateView(UpdateView):
     #     pk = self.kwargs["pk"]
     #     return reverse_lazy("blog:post_detail", kwargs={"pk": pk})
     def get_success_url(self):
-        return reverse_lazy("blog:post_detail",args=[self.kwargs.get("pk")])
-
+        return reverse_lazy("blog:post_detail", args=[self.kwargs.get("pk")])
 
 
 class PostDeleteView(DeleteView):
@@ -83,3 +83,21 @@ class PostList2View(ListView):
         # queryset = super().get_queryset().filter(published=True)
         # return queryset.order_by("-id")
         return Post.objects.filter(published=True)
+
+
+#  Instantiate scheduler
+scheduler = BackgroundScheduler()
+#  Scheduler uses DjangoJobStore()
+scheduler.add_jobstore(DjangoJobStore(), "default")
+
+
+# 'cron' Mode cycle, week 1 To the week 5 , every day 9:30:10 Execute ,id For work ID As a mark
+# ('scheduler',"interval", seconds=1) # Use interval Mode loop, every 1 Second execution 1 Times
+
+@register_job(scheduler, "interval", seconds=25, id='task_time')
+def test_job():
+    t_now = datetime.now()
+    print(t_now)
+
+#  Scheduler starts
+scheduler.start()
