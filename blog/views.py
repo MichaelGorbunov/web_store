@@ -93,11 +93,21 @@ scheduler.add_jobstore(DjangoJobStore(), "default")
 
 # 'cron' Mode cycle, week 1 To the week 5 , every day 9:30:10 Execute ,id For work ID As a mark
 # ('scheduler',"interval", seconds=1) # Use interval Mode loop, every 1 Second execution 1 Times
-
-@register_job(scheduler, "interval", seconds=25, id='task_time')
+# print(scheduler.get_job('task_time'))
+# @register_job(scheduler, "interval", seconds=25, id='task_time')
 def test_job():
     t_now = datetime.now()
     print(t_now)
 
+
+scheduler.add_job(
+    test_job,
+    "interval",
+    seconds=25,
+    id='task_time',
+    jobstore="default",
+    replace_existing=True)
+
 #  Scheduler starts
 scheduler.start()
+print(scheduler.get_job('task_time'))
