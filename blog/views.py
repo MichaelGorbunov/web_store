@@ -5,6 +5,7 @@ from django.views.generic import ListView, DetailView
 from .models import Post
 from apscheduler.schedulers.background import BackgroundScheduler
 from django_apscheduler.jobstores import DjangoJobStore, register_job
+from apscheduler.events import EVENT_JOB_ADDED, EVENT_JOB_REMOVED, EVENT_JOB_EXECUTED
 from datetime import datetime
 
 
@@ -85,10 +86,24 @@ class PostList2View(ListView):
         return Post.objects.filter(published=True)
 
 
-#  Instantiate scheduler
-scheduler = BackgroundScheduler()
-#  Scheduler uses DjangoJobStore()
-scheduler.add_jobstore(DjangoJobStore(), "default")
+
+
+
+
+def job_listener(event):
+    if event.exception:
+        print(f'Job {event.job_id} failed.')
+    else:
+        print(f'Job {event.job_id} **.')
+        print(f'Job {event} **.')
+
+
+def clean_jobstore(scheduler):
+    # Удаляем все задачи из jobstore
+    # scheduler.remove_all()
+    scheduler.remove_all_jobs()
+
+    print("Jobstore cleaned.")
 
 
 # 'cron' Mode cycle, week 1 To the week 5 , every day 9:30:10 Execute ,id For work ID As a mark
@@ -103,14 +118,42 @@ def test_job2():
     # t_now = datetime.now()
     print("task2")
 
+def scheduled_job(param1, param2):
+    print(f"Scheduled job executed with parameters: {param1}, {param2}")
 
-scheduler.add_job(
-    test_job,
-    "interval",
-    seconds=17,
-    id='task1_time',
-    jobstore="default",
-    replace_existing=True)
+def start_scheduler():
+    #  Instantiate scheduler
+    scheduler = BackgroundScheduler()
+    #  Scheduler uses DjangoJobStore()
+    scheduler.add_jobstore(DjangoJobStore(), "default")
+
+    # Добавляем слушателя
+    scheduler.add_listener(job_listener, EVENT_JOB_ADDED | EVENT_JOB_REMOVED | EVENT_JOB_EXECUTED)
+
+    clean_jobstore(scheduler)
+
+    # Пример задачи
+    # scheduler.add_job(my_job, 'interval', seconds=10, id='my_job_id')
+    scheduler.add_job(
+        scheduled_job,
+        "interval",
+        seconds=5,
+        id='scheduled_job1',
+        jobstore="default",
+        args=['Hello', 'World'],
+        replace_existing=True)
+
+    scheduler.start()
+    print("Scheduler started.")
+
+
+start_scheduler()
+
+# scheduler.add_listener(job_listener, EVENT_JOB_ADDED | EVENT_JOB_REMOVED | EVENT_JOB_EXECUTED)
+#
+
+
+
 
 # scheduler.add_job(
 #     test_job2,
@@ -120,10 +163,16 @@ scheduler.add_job(
 #     jobstore="default",
 #     replace_existing=True)
 
-scheduler.add_job(test_job2, 'cron', hour=13, minute='*', second='*/5' ,jitter=3,id='task2_time',jobstore="default",replace_existing=True)
+# scheduler.add_job(test_job2, 'cron', hour=13, minute='*', second='*/5' ,jitter=3,id='task2_time',jobstore="default",replace_existing=True)
 
 
 #  Scheduler starts
-scheduler.start()
-scheduler.print_jobs()
+# scheduler.start()
+# print("Scheduler started.")
+# scheduler.print_jobs()
+# m=input("clean?")
+# if m in("Y","1","Да","Yes","yes"):
+#     clean_jobstore(scheduler)
+
+# clean_jobstore(scheduler)
 
