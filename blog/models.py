@@ -33,3 +33,22 @@ class Post(models.Model):
     class Meta:
         verbose_name = 'пост'
         verbose_name_plural = 'посты'
+
+class Job(models.Model):
+    job_id = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=200)
+    # Add other fields as necessary
+    interval = models.IntegerField(default=30)  # Interval in seconds
+    # Add other fields as necessary
+
+class CronJob(models.Model):
+    job_id = models.CharField(max_length=100, unique=True)
+    name = models.CharField(max_length=200)
+    minute = models.CharField(max_length=10, default='*')  # Cron format
+    hour = models.CharField(max_length=10, default='*')    # Cron format
+    day = models.CharField(max_length=10, default='*')     # Cron format
+    month = models.CharField(max_length=10, default='*')   # Cron format
+    day_of_week = models.CharField(max_length=10, default='*')  # Cron format
+
+    def __str__(self):
+        return self.name

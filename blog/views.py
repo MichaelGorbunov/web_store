@@ -98,56 +98,56 @@ def job_listener(event):
         print(f'Job {event} **.')
 
 
-def clean_jobstore(scheduler):
-    # Удаляем все задачи из jobstore
-    # scheduler.remove_all()
-    scheduler.remove_all_jobs()
-
-    print("Jobstore cleaned.")
+# def clean_jobstore(scheduler):
+#     # Удаляем все задачи из jobstore
+#     # scheduler.remove_all()
+#     scheduler.remove_all_jobs()
+#
+#     print("Jobstore cleaned.")
 
 
 # 'cron' Mode cycle, week 1 To the week 5 , every day 9:30:10 Execute ,id For work ID As a mark
 # ('scheduler',"interval", seconds=1) # Use interval Mode loop, every 1 Second execution 1 Times
 # print(scheduler.get_job('task_time'))
 # @register_job(scheduler, "interval", seconds=25, id='task_time')
-def test_job():
-    # t_now = datetime.now()
-    print("task1")
+# def test_job():
+#     # t_now = datetime.now()
+#     print("task1")
+#
+# def test_job2():
+#     # t_now = datetime.now()
+#     print("task2")
+#
+# def scheduled_job(param1, param2):
+#     print(f"Scheduled job executed with parameters: {param1}, {param2}")
 
-def test_job2():
-    # t_now = datetime.now()
-    print("task2")
-
-def scheduled_job(param1, param2):
-    print(f"Scheduled job executed with parameters: {param1}, {param2}")
-
-def start_scheduler():
-    #  Instantiate scheduler
-    scheduler = BackgroundScheduler()
-    #  Scheduler uses DjangoJobStore()
-    scheduler.add_jobstore(DjangoJobStore(), "default")
-
-    # Добавляем слушателя
-    scheduler.add_listener(job_listener, EVENT_JOB_ADDED | EVENT_JOB_REMOVED | EVENT_JOB_EXECUTED)
-
-    clean_jobstore(scheduler)
+# def start_scheduler():
+#     #  Instantiate scheduler
+#     scheduler = BackgroundScheduler()
+#     #  Scheduler uses DjangoJobStore()
+#     scheduler.add_jobstore(DjangoJobStore(), "default")
+#
+#     # Добавляем слушателя
+#     scheduler.add_listener(job_listener, EVENT_JOB_ADDED | EVENT_JOB_REMOVED | EVENT_JOB_EXECUTED)
+#
+#     clean_jobstore(scheduler)
 
     # Пример задачи
     # scheduler.add_job(my_job, 'interval', seconds=10, id='my_job_id')
-    scheduler.add_job(
-        scheduled_job,
-        "interval",
-        seconds=5,
-        id='scheduled_job1',
-        jobstore="default",
-        args=['Hello', 'World'],
-        replace_existing=True)
+    # scheduler.add_job(
+    #     scheduled_job,
+    #     "interval",
+    #     seconds=5,
+    #     id='scheduled_job1',
+    #     jobstore="default",
+    #     args=['Hello', 'World'],
+    #     replace_existing=True)
+    #
+    # scheduler.start()
+    # print("Scheduler started.")
 
-    scheduler.start()
-    print("Scheduler started.")
 
-
-start_scheduler()
+# start_scheduler()
 
 # scheduler.add_listener(job_listener, EVENT_JOB_ADDED | EVENT_JOB_REMOVED | EVENT_JOB_EXECUTED)
 #
@@ -174,5 +174,8 @@ start_scheduler()
 # if m in("Y","1","Да","Yes","yes"):
 #     clean_jobstore(scheduler)
 
-# clean_jobstore(scheduler)
-
+# # clean_jobstore(scheduler)
+# scheduler = BackgroundScheduler()
+# # scheduler.add_jobstore(DjangoJobStore(), "default")
+# scheduler.add_listener(job_listener, EVENT_JOB_ADDED | EVENT_JOB_REMOVED | EVENT_JOB_EXECUTED)
+# scheduler.start()
