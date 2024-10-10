@@ -90,12 +90,12 @@ class PostList2View(ListView):
 
 
 
-def job_listener(event):
-    if event.exception:
-        print(f'Job {event.job_id} failed.')
-    else:
-        print(f'Job {event.job_id} **.')
-        print(f'Job {event} **.')
+# def job_listener(event):
+#     if event.exception:
+#         print(f'Job {event.job_id} failed.')
+#     else:
+#         print(f'Job {event.job_id} **.')
+#         print(f'Job {event} **.')
 
 
 # def clean_jobstore(scheduler):
