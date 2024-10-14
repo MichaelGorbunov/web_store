@@ -30,10 +30,10 @@ class ContactListView(ListView):
         name = self.request.POST.get('name')
         phone = self.request.POST.get('phone')
         message = self.request.POST.get('message')
-        print(RECIPIENTS_EMAIL)
-        # print(f'You have new message from {name}({phone}): {message}')
-        send_mail(f'{name} от {phone}', message,
-                  DEFAULT_FROM_EMAIL, RECIPIENTS_EMAIL)
+
+
+        # send_mail(f'{name} от {phone}', message,
+        #           DEFAULT_FROM_EMAIL, RECIPIENTS_EMAIL)
 
         return self.render_to_response(context)
 

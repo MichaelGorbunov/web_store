@@ -83,3 +83,7 @@ class PostList2View(ListView):
         # queryset = super().get_queryset().filter(published=True)
         # return queryset.order_by("-id")
         return Post.objects.filter(published=True)
+
+
+
+
