@@ -1,12 +1,13 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404
-from catalog.models import Contact, Product
-# from django.core.paginator import Paginator
-from catalog.form import Form_Add_Product
-from django.urls import reverse
+from catalog.models import Contact, Product,Category
+from django.urls import reverse,reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
-from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
+from django.views.generic.edit import CreateView, UpdateView
+# from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
+from .forms import ProductForm,CategoryForm
 
 
 # Create your views here.
@@ -44,6 +45,10 @@ class ProductDetailView(DetailView):
     template_name = 'catalog/product_detail.html'
     context_object_name = 'product'
 
+class CategoryesListView(ListView):
+    model = Category
+    template_name = 'catalog/categoryes_list.html'
+    context_object_name = 'categoryes'
 
 class ProductsListView(ListView):
     model = Product
@@ -54,4 +59,26 @@ class ProductsListView(ListView):
         queryset = super().get_queryset()
         return queryset.order_by("name")  # сорт по имени
 
+class CategoryCreateView(CreateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'catalog/category_form.html'
+    success_url = reverse_lazy('catalog:categoryes_list')
 
+class CategoryUpdateView(UpdateView):
+    model = Category
+    form_class = CategoryForm
+    template_name = 'catalog/category_form.html'
+    success_url = reverse_lazy('catalog:categoryes_list')
+
+class ProductCreateView(CreateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('catalog:products_list')
+
+class ProductUpdateView(UpdateView):
+    model = Product
+    form_class = ProductForm
+    template_name = 'catalog/product_form.html'
+    success_url = reverse_lazy('catalog:products_list')
