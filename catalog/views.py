@@ -11,7 +11,6 @@ from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
 
 # Create your views here.
 
-
 def send(request):
     return render(request, "catalog/send.html")
 
