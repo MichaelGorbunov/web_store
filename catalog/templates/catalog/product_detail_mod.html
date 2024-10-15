@@ -14,7 +14,7 @@
                     <h1 class="card-title pricing-card-title">$ {{product.price}}</h1>
                     <p class="card-text">{{product.description}}</p>
 
-                    <img src=/media/{{product.photo}} class="img-thumbnail">
+                    <img src=/media/{{product.photo}} class="img-thumbnail" width="200" ">
                     <h6 class="font-weight-normal">Категория: {{product.category.name}} </h6>
                     <a href="{% url 'catalog:product_mod' product.pk %}" class="btn btn-secondary">Редактировать</a>
                     <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">Удалить</a>
