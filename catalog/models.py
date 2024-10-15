@@ -50,10 +50,7 @@ class Product(models.Model):
         related_name="categories",
     )
     price = models.IntegerField(
-        blank=True,
-        null=True,
-        verbose_name="Цена",
-        help_text="Укажите цену за покупку"
+        blank=True, null=True, verbose_name="Цена", help_text="Укажите цену за покупку"
     )
     created_at = models.DateField(
         auto_now_add=True,
@@ -99,6 +96,7 @@ class Contact(models.Model):
         verbose_name="Основной телефон",
         help_text="Введите номер телефона",
     )
+
     class Meta:
         verbose_name = "Контакты"
         verbose_name_plural = "Контакты"
