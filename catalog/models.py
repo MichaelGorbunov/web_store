@@ -38,6 +38,7 @@ class Product(models.Model):
         upload_to="photos/",
         blank=True,
         null=True,
+        default="photos/default.jpg",
         verbose_name="Изображение (превью)",
         help_text="Загрузите фото продукта",
     )

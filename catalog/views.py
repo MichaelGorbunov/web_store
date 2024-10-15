@@ -5,7 +5,7 @@ from django.shortcuts import render, get_object_or_404
 from catalog.models import Contact, Product,Category
 from django.urls import reverse,reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView,DeleteView
 # from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
 from .forms import ProductForm,CategoryForm
 
@@ -75,10 +75,29 @@ class ProductCreateView(CreateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
-    success_url = reverse_lazy('catalog:products_list')
+    success_url = reverse_lazy('catalog:product_mod_list')
 
 class ProductUpdateView(UpdateView):
     model = Product
     form_class = ProductForm
     template_name = 'catalog/product_form.html'
-    success_url = reverse_lazy('catalog:products_list')
+    success_url = reverse_lazy('catalog:product_mod_list')
+
+class ProductModListView(ListView):
+    model = Product
+    template_name = 'catalog/products_list2.html'
+    context_object_name = 'products'
+
+class ProductModDetailView(DetailView):
+    """детальное описание поста"""
+    model = Product
+    template_name = 'catalog/product_detail_mod.html'
+    context_object_name = 'product'
+
+class ProductDeleteView(DeleteView):
+    """удаление поста"""
+    model = Product
+    template_name = 'catalog/product_confirm_delete.html'
+    success_url = reverse_lazy('catalog:product_mod_list')
+
+
