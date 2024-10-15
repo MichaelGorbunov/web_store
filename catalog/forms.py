@@ -12,6 +12,14 @@ class CategoryForm(forms.ModelForm):
         model = Category
         fields = "__all__"
 
+    def __init__(self, *args, **kwargs):
+        super(CategoryForm, self).__init__(*args, **kwargs)
+        for field_name in self.fields:
+            self.fields[field_name].help_text = ''
+
+        self.fields['name'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Введите название категории'})
+        self.fields['description'].widget.attrs.update({'class': 'form-control', 'placeholder': 'Введите описание'})
+
 
 class ProductForm(forms.ModelForm):
     class Meta:
@@ -40,9 +48,9 @@ class ProductForm(forms.ModelForm):
 
     def clean_photo(self):
         image = self.cleaned_data.get('photo')
-        if image.size > 5 * 1024 * 1024:  # 5 MB
+        if not image and image.size > 5 * 1024 * 1024:  # 5 MB
             raise ValidationError("Картинка очень большая ( > 5MB )")
-        if not image.name.endswith('.jpg', '.jpeg', '.png'):
+        if not image and image.name.endswith('.jpg', '.jpeg', '.png'):
             raise ValidationError("Файл не является изображением")
         return image
 
