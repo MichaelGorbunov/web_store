@@ -70,6 +70,11 @@ class CategoryUpdateView(UpdateView):
     form_class = CategoryForm
     template_name = 'catalog/category_form.html'
     success_url = reverse_lazy('catalog:categoryes_list')
+class CategoryDeleteView(DeleteView):
+    """удаление поста"""
+    model = Category
+    template_name = 'catalog/category_confirm_delete.html'
+    success_url = reverse_lazy('catalog:categoryes_list')
 
 class ProductCreateView(CreateView):
     model = Product
