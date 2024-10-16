@@ -1,0 +1,20 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Добавить/Редактировать продукт{% endblock %}
+
+{% block content %}
+
+        <h4 class="mb-4">Список продуктов</h4>
+        <a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3">Создать новый продукт</a>
+
+        <ul class="list-group">
+            {% for product in object_list %}
+            <div class="post">
+                <a href="{% url 'catalog:product_mod_detail' product.pk %}">{{ product.name }}</a>
+            </div>
+
+
+            {% endfor %}
+        </ul>
+
+{% endblock %}

@@ -44,6 +44,7 @@ https://github.com/MichaelGorbunov/web_store/
 * http://127.0.0.1:8000/catalog/ Главная страница **catalog**
 * http://127.0.0.1:8000/blog/ Главная страница **blog**
 * http://127.0.0.1:8000/blog/posts_list2/ Главная страница **blog** с пагинацией
+* http://127.0.0.1:8000/catalog/product_mod_list Редактирование продуктов
 
 
 

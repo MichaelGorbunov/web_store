@@ -1,0 +1,27 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Каталог продуктов{% endblock %}
+
+{% block content %}
+<div class="row text-center">
+    {% for category in categoryes %}
+        <div class="col-4">
+
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{category.name}} </h4>
+                </div>
+                <div class="card-body">
+
+                    <p class="card-text">{{category.description}}</p>
+                    <a href="{% url 'catalog:category_mod' category.pk %}" class="btn btn-secondary">Редактировать</a>
+                    <a href="{% url 'catalog:category_delete' category.pk %}" class="btn btn-danger">Удалить</a>
+
+                </div>
+
+            </div>
+
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

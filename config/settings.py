@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "catalog",
-    "blog"
+    "blog",
 ]
 
 MIDDLEWARE = [
@@ -154,3 +154,16 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 # # на почту
 # EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 # EMAIL_FILE_PATH=os.path.join(BASE_DIR, "mail")
+
+
+WRONG_WORDS_LIST = [
+    "казино",
+    "криптовалюта",
+    "крипта",
+    "биржа",
+    "дешево",
+    "бесплатно",
+    "обман",
+    "полиция",
+    "радар",
+]
