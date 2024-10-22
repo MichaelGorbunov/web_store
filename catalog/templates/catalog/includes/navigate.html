@@ -3,7 +3,11 @@
     <nav class="ms-5">
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:product_list' %}">Главная</a>
         <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:contact' %}">Контакты</a>
-        <ul class="navbar-nav ml-auto">
+
+
+
+
+                <ul class="navbar-nav ml-auto">
                 {% if user.is_authenticated %}
                     <li class="nav-item">
 	                    <form method="post" action="{% url 'users:logout' %}" style="display: inline;">
