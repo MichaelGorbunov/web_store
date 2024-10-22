@@ -6,6 +6,7 @@ from catalog.models import Contact, Product, Category
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
 from .forms import ProductForm, CategoryForm
@@ -46,32 +47,36 @@ class CategoryesListView(ListView):
     context_object_name = "categoryes"
 
 
-class CategoryCreateView(CreateView):
+class CategoryCreateView(LoginRequiredMixin,CreateView):
     """создание категории продуктов"""
 
     model = Category
     form_class = CategoryForm
     template_name = "catalog/category_form.html"
+    login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:categoryes_list")
 
 
-class CategoryUpdateView(UpdateView):
+class CategoryUpdateView(LoginRequiredMixin,UpdateView):
     model = Category
     form_class = CategoryForm
     template_name = "catalog/category_form.html"
+    login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:categoryes_list")
 
 
-class CategoryDeleteView(DeleteView):
+class CategoryDeleteView(LoginRequiredMixin,DeleteView):
     """удаление категории"""
 
     model = Category
     template_name = "catalog/category_confirm_delete.html"
+    login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:categoryes_list")
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(LoginRequiredMixin,DetailView):
     model = Product
+    login_url = reverse_lazy('users:login')
     template_name = "catalog/product_detail.html"
     context_object_name = "product"
 
@@ -86,38 +91,43 @@ class ProductsListView(ListView):
         return queryset.order_by("name")  # сорт по имени
 
 
-class ProductCreateView(CreateView):
+class ProductCreateView(LoginRequiredMixin,CreateView):
 
     model = Product
     form_class = ProductForm
     template_name = "catalog/product_form.html"
+    login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:product_mod_list")
 
 
-class ProductUpdateView(UpdateView):
+class ProductUpdateView(LoginRequiredMixin,UpdateView):
     model = Product
     form_class = ProductForm
     template_name = "catalog/product_form.html"
+    login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:product_mod_list")
 
 
-class ProductModListView(ListView):
+class ProductModListView(LoginRequiredMixin,ListView):
     model = Product
     template_name = "catalog/products_list2.html"
+    login_url = reverse_lazy('users:login')
     context_object_name = "products"
 
 
-class ProductModDetailView(DetailView):
+class ProductModDetailView(LoginRequiredMixin,DetailView):
     """детальное описание поста"""
 
     model = Product
     template_name = "catalog/product_detail_mod.html"
+    login_url = reverse_lazy('users:login')
     context_object_name = "product"
 
 
-class ProductDeleteView(DeleteView):
+class ProductDeleteView(LoginRequiredMixin,DeleteView):
     """удаление поста"""
 
     model = Product
     template_name = "catalog/product_confirm_delete.html"
+    login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:product_mod_list")
