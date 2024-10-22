@@ -170,5 +170,5 @@ WRONG_WORDS_LIST = [
 ]
 
 AUTH_USER_MODEL = 'users.CustomUser'
-LOGIN_REDIRECT_URL = '/catalog/'
+# LOGIN_REDIRECT_URL = '/catalog/'
 # LOGOUT_REDIRECT_URL = '/catalog/'

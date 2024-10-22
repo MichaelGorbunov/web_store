@@ -4,6 +4,7 @@ from django.core.mail import send_mail
 from django.contrib.auth import login
 from .forms import CustomUserCreationForm,CustomUserUpdateForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.views import LoginView
 from django.conf import settings
 from django.views.generic.edit import UpdateView
 from users.models import CustomUser
@@ -36,3 +37,7 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
     def get_object(self):
         # Ensure that the form updates the current logged-in user
         return self.request.user
+
+class CustomLoginView(LoginView):
+    template_name = 'login.html'
+    success_url = reverse_lazy('catalog:products_list')
