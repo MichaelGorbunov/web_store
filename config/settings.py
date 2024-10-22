@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "catalog",
     "blog",
+    "users",
 ]
 
 MIDDLEWARE = [
@@ -167,3 +168,5 @@ WRONG_WORDS_LIST = [
     "полиция",
     "радар",
 ]
+
+AUTH_USER_MODEL = 'users.CustomUser'
