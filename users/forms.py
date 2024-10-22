@@ -7,7 +7,7 @@ class CustomUserCreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = CustomUser
-        fields = ('email', 'username', 'first_name', 'last_name', 'phone_number', 'password1', 'password2')
+        fields = ('email', 'username', 'first_name', 'last_name','avatar','country', 'phone_number', 'password1', 'password2')
     def __init__(self, *args, **kwargs):
         super(CustomUserCreationForm, self).__init__(*args, **kwargs)
         for field in self.fields:
@@ -23,7 +23,7 @@ class CustomUserCreationForm(UserCreationForm):
 class CustomUserUpdateForm(forms.ModelForm):
     class Meta:
         model = CustomUser
-        fields = ['username', 'email', 'first_name', 'last_name', 'phone_number']  # добавьте необходимые поля
+        fields = ['username', 'email', 'first_name', 'last_name', 'avatar','country','phone_number']  # добавьте необходимые поля
 
     def __init__(self, *args, **kwargs):
         super(CustomUserUpdateForm, self).__init__(*args, **kwargs)
