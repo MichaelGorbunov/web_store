@@ -8,6 +8,10 @@ class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = CustomUser
         fields = ('email', 'username', 'first_name', 'last_name', 'phone_number', 'password1', 'password2')
+    def __init__(self, *args, **kwargs):
+        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')
