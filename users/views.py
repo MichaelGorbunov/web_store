@@ -44,3 +44,4 @@ class UserUpdateView(LoginRequiredMixin, UpdateView):
 class CustomLoginView(LoginView):
     template_name = 'users/login.html'
     # success_url = reverse_lazy('catalog:products_list')  # не работает
+    next_page = reverse_lazy('catalog:products_list') #работает
