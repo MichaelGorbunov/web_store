@@ -1,12 +1,40 @@
 {% extends "catalog/base.html" %}
 
-{% block title %}Регистрация{% endblock %}
+{% block title %}
+{% if object%}
+Редактирование
+{% else %}
+Регистрация
+{% endif %}
+
+{% endblock %}
+
+
+
 
 {% block content %}
-  <h2>Регистрация</h2>
+{% if object%}
+<h4>Редактирование пользователя</h4>
+{% else %}
+<h4>Создание пользователя</h4>
+{% endif %}
+
+
+<!--  <h2>Регистрация</h2>-->
   <form method="post">
     {% csrf_token %}
     {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+
+  {% if object%}
+    <button type="submit" class="btn btn-primary">Сохранить</button>
+  {% else %}
+   <button type="submit" class="btn btn-primary">Зарегистрироваться</button>
+  {% endif %}
+
+
+
+
+
+
   </form>
 {% endblock %}

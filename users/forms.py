@@ -14,3 +14,14 @@ class CustomUserCreationForm(UserCreationForm):
         if phone_number and not phone_number.isdigit():
             raise forms.ValidationError('Номер должен содержать только числа.')
         return phone_number
+
+
+class CustomUserUpdateForm(forms.ModelForm):
+    class Meta:
+        model = CustomUser
+        fields = ['username', 'email', 'first_name', 'last_name', 'phone_number']  # добавьте необходимые поля
+
+    def __init__(self, *args, **kwargs):
+        super(CustomUserUpdateForm, self).__init__(*args, **kwargs)
+        for field in self.fields:
+            self.fields[field].widget.attrs.update({'class': 'form-control'})
