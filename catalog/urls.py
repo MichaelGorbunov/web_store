@@ -23,8 +23,8 @@ app_name = CatalogConfig.name
 
 urlpatterns = [
     # url PROD
-    path("catalog/", ProductsListView.as_view(), name="product_list"),
-    path("catalog/product/all", ProductsListView.as_view(), name="products_list"),
+    path("", ProductsListView.as_view(), name="product_list"),
+    path("catalog/", ProductsListView.as_view(), name="products_list"),
     path("catalog/contact/", ContactListView.as_view(), name="contact"),
     path(
         "catalog/product_detail/<int:pk>/",
@@ -32,7 +32,7 @@ urlpatterns = [
         name="product_detail",
     ),
     # url for CRUD
-    path("", ProductModListView.as_view(), name="product_mod_list"),
+    path("catalog/product/all", ProductModListView.as_view(), name="product_mod_list"),
     path(
         "catalog/category/create", CategoryCreateView.as_view(), name="category_create"
     ),
