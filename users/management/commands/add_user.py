@@ -72,9 +72,7 @@ class Command(BaseCommand):
         user.save()
 
         # Менеджеры продуктов
-        user = CustomUser.objects.get(email='petrov@webstore.ru')
-        product_manager_group = Group.objects.get(name='Product manager')
-        user.groups.add(product_manager_group)
+
 
         user = CustomUser.objects.get(email='ivanov@webstore.ru')
         product_manager_group = Group.objects.get(name='Product manager')

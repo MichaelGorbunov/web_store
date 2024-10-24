@@ -5,7 +5,12 @@
 {% block content %}
 
         <h4 class="mb-4">Список продуктов</h4>
-        <a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3">Создать новый продукт</a>
+        {% if perms.catalog.add_product %}
+
+            <a href="{% url 'catalog:product_create' %}" class="btn btn-primary mb-3">Создать новый продукт</a>
+
+        {% endif %}
+
 
         <ul class="list-group">
             {% for product in object_list %}

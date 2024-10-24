@@ -1,0 +1,5 @@
+from users.models import CustomUser
+from django.contrib.auth.models import Group
+user = CustomUser.objects.get( email='petrov@webstore.ru')
+g = Group.objects.get(name='Product manager')
+user.groups.remove(g)
