@@ -29,7 +29,7 @@ class Command(BaseCommand):
 
         User = get_user_model()
         user = User.objects.create(
-            username="Petrov Petr",
+            username="Petrov_Petr",
             email='petrov@webstore.ru',
             first_name='Petr',
             last_name='Petrov'
@@ -40,7 +40,7 @@ class Command(BaseCommand):
 
         User = get_user_model()
         user = User.objects.create(
-            username="Ivanov Ivan",
+            username="Ivanov_Ivan",
             email='ivanov@webstore.ru',
             first_name='Ivan',
             last_name='Ivanov'
@@ -51,7 +51,7 @@ class Command(BaseCommand):
 
         User = get_user_model()
         user = User.objects.create(
-            username="Vasiljev Vasilij",
+            username="Vasiljev_Vasilij",
             email='vasiljev@webstore.ru',
             first_name='Vasilij',
             last_name='Vasiljev'
@@ -62,7 +62,7 @@ class Command(BaseCommand):
 
         User = get_user_model()
         user = User.objects.create(
-            username="Sergjev Sergey",
+            username="Sergjev_Sergey",
             email='sergejev@webstore.ru',
             first_name='Sergey',
             last_name='Sergjev'

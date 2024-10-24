@@ -136,7 +136,7 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         if not request.user.has_perm('catalog.delete_product'):
-            return HttpResponseForbidden("У вас нет разрешения на удаление этого поста.")
+            return HttpResponseForbidden("У вас нет разрешения на удаление этого продукта.")
 
 
         return super().dispatch(request, *args, **kwargs)
