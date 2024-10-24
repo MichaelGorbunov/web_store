@@ -95,17 +95,19 @@ class ProductsListView(ListView):
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
+
     model = Product
     form_class = ProductForm
     template_name = "catalog/product_form.html"
     login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:product_mod_list")
 
-    # def get(self, request, *args, **kwargs):
-    #     if request.user.is_authenticated:
-    #         # Получение ID пользователя
-    #         user_id = request.user.id  # или request.user.pk
-    #         return HttpResponse(f"Ваш ID: {user_id}")
+    def form_valid(self, form):
+        product = form.save()
+        user = self.request.user
+        product.owners = self.request.user
+        product.save()
+        return super().form_valid(form)
 
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
