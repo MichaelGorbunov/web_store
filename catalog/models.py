@@ -1,4 +1,5 @@
 from django.db import models
+from users.models import CustomUser
 
 
 class Category(models.Model):
@@ -67,6 +68,13 @@ class Product(models.Model):
         verbose_name="Разрешение для публикации",
         help_text="Этот продукт разрешен для публикации",
 
+    )
+    owners = models.ForeignKey(
+        CustomUser,
+        on_delete=models.CASCADE,
+        verbose_name="Владелец продукта",
+        default=1,
+        related_name="name",
     )
 
     class Meta:
