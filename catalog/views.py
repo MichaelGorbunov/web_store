@@ -1,3 +1,4 @@
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import HttpResponseForbidden
 from django.conf import settings
@@ -95,7 +96,6 @@ class ProductsListView(ListView):
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
-
     model = Product
     form_class = ProductForm
     template_name = "catalog/product_form.html"
@@ -120,12 +120,25 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "catalog/product_form.html"
     login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:product_mod_list")
+
+    # def test_func(self):
+    #     # Проверяем, обладает ли пользователь нужным разрешением
+    #     return self.request.user.has_perm('app_name.change_yourmodel')
+
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.request.user == self.object.owners:
+            self.object.save()
+            return self.object
+        raise PermissionDenied
+        # return HttpResponseForbidden("Вы не можете изменять чужой продукт.")
+
     def form_valid(self, form):
         if 'allowed_publication' in form.changed_data:  # Проверка, было ли поле 'field2' изменено
             if not self.request.user.has_perm('catalog.can_unpublish_product'):
                 return HttpResponseForbidden("Вы не можете изменять поле публикация.")
-        return super().form_valid(form)
 
+        return super().form_valid(form)
 
 
 class ProductModListView(LoginRequiredMixin, ListView):
@@ -145,7 +158,7 @@ class ProductModDetailView(LoginRequiredMixin, DetailView):
 
 
 class ProductDeleteView(LoginRequiredMixin, DeleteView):
-    """удаление поста"""
+    """удаление продукта"""
 
     model = Product
     template_name = "catalog/product_confirm_delete.html"
@@ -153,8 +166,10 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("catalog:product_mod_list")
 
     def dispatch(self, request, *args, **kwargs):
-        if not request.user.has_perm('catalog.delete_product'):
-            return HttpResponseForbidden("У вас нет разрешения на удаление этого продукта.")
 
+        obj = Product.objects.get(pk=kwargs['pk'])
+        if obj.owners != request.user:
+            if not request.user.has_perm('catalog.delete_product'):
+                return HttpResponseForbidden("У вас нет разрешения на удаление этого продукта")
 
         return super().dispatch(request, *args, **kwargs)
