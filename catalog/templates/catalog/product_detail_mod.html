@@ -16,7 +16,9 @@
 
                     <img src=/media/{{product.photo}} class="img-thumbnail" width="200" ">
                     <h6 class="font-weight-normal">Категория: {{product.category.name}} </h6>
+                    {% if perms.catalog.change_product %}
                     <a href="{% url 'catalog:product_mod' product.pk %}" class="btn btn-secondary">Редактировать</a>
+                    {% endif %}
                     <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">Удалить</a>
                     <a href="{% url 'catalog:product_mod_list' %}" class="btn btn-primary">Вернуться к списку</a>
 
