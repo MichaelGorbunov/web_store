@@ -1,7 +1,8 @@
 from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseForbidden
 from django.conf import settings
 from django.core.mail import send_mail
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from catalog.models import Contact, Product, Category
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
@@ -88,10 +89,9 @@ class ProductsListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset=queryset.filter(allowed_publication=True)
-        queryset=queryset.order_by("name")
+        queryset = queryset.filter(allowed_publication=True)
+        queryset = queryset.order_by("name")
         return queryset
-
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
@@ -133,3 +133,10 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     template_name = "catalog/product_confirm_delete.html"
     login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:product_mod_list")
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.has_perm('catalog.delete_product'):
+            return HttpResponseForbidden("У вас нет разрешения на удаление этого поста.")
+
+
+        return super().dispatch(request, *args, **kwargs)
