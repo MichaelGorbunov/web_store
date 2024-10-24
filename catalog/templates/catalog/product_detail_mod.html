@@ -16,8 +16,10 @@
 
                     <img src=/media/{{product.photo}} class="img-thumbnail" width="200" ">
                     <h6 class="font-weight-normal">Категория: {{product.category.name}} </h6>
+                    {% if perms.catalog.can_unpublish_product or user == product.owners %}
                     <a href="{% url 'catalog:product_mod' product.pk %}" class="btn btn-secondary">Редактировать</a>
                     <a href="{% url 'catalog:product_delete' product.pk %}" class="btn btn-danger">Удалить</a>
+                     {% endif %}
                     <a href="{% url 'catalog:product_mod_list' %}" class="btn btn-primary">Вернуться к списку</a>
 
                 </div>
