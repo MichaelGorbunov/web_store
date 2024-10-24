@@ -25,7 +25,7 @@ class Command(BaseCommand):
         delete_product_permission = Permission.objects.get(codename='delete_product')
 
         # Назначаем разрешения группе
-        product_moderator_group.permissions.add(delete_product_permission, can_unpublish_product_permission)
+        product_moderator_group.permissions.add(delete_product_permission, can_unpublish_product_permission,change_product_permission)
 
         User = get_user_model()
         user = User.objects.create(
