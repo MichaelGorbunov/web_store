@@ -101,6 +101,12 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:product_mod_list")
 
+    # def get(self, request, *args, **kwargs):
+    #     if request.user.is_authenticated:
+    #         # Получение ID пользователя
+    #         user_id = request.user.id  # или request.user.pk
+    #         return HttpResponse(f"Ваш ID: {user_id}")
+
 
 class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
