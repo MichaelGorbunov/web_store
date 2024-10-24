@@ -47,7 +47,7 @@ class CategoryesListView(ListView):
     context_object_name = "categoryes"
 
 
-class CategoryCreateView(LoginRequiredMixin,CreateView):
+class CategoryCreateView(LoginRequiredMixin, CreateView):
     """создание категории продуктов"""
 
     model = Category
@@ -57,7 +57,7 @@ class CategoryCreateView(LoginRequiredMixin,CreateView):
     success_url = reverse_lazy("catalog:categoryes_list")
 
 
-class CategoryUpdateView(LoginRequiredMixin,UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = Category
     form_class = CategoryForm
     template_name = "catalog/category_form.html"
@@ -65,7 +65,7 @@ class CategoryUpdateView(LoginRequiredMixin,UpdateView):
     success_url = reverse_lazy("catalog:categoryes_list")
 
 
-class CategoryDeleteView(LoginRequiredMixin,DeleteView):
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     """удаление категории"""
 
     model = Category
@@ -74,7 +74,7 @@ class CategoryDeleteView(LoginRequiredMixin,DeleteView):
     success_url = reverse_lazy("catalog:categoryes_list")
 
 
-class ProductDetailView(LoginRequiredMixin,DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     login_url = reverse_lazy('users:login')
     template_name = "catalog/product_detail.html"
@@ -88,11 +88,13 @@ class ProductsListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.order_by("name")  # сорт по имени
+        queryset=queryset.filter(allowed_publication=True)
+        queryset=queryset.order_by("name")
+        return queryset
 
 
-class ProductCreateView(LoginRequiredMixin,CreateView):
 
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = "catalog/product_form.html"
@@ -100,7 +102,7 @@ class ProductCreateView(LoginRequiredMixin,CreateView):
     success_url = reverse_lazy("catalog:product_mod_list")
 
 
-class ProductUpdateView(LoginRequiredMixin,UpdateView):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = "catalog/product_form.html"
@@ -108,14 +110,14 @@ class ProductUpdateView(LoginRequiredMixin,UpdateView):
     success_url = reverse_lazy("catalog:product_mod_list")
 
 
-class ProductModListView(LoginRequiredMixin,ListView):
+class ProductModListView(LoginRequiredMixin, ListView):
     model = Product
     template_name = "catalog/products_list2.html"
     login_url = reverse_lazy('users:login')
     context_object_name = "products"
 
 
-class ProductModDetailView(LoginRequiredMixin,DetailView):
+class ProductModDetailView(LoginRequiredMixin, DetailView):
     """детальное описание поста"""
 
     model = Product
@@ -124,7 +126,7 @@ class ProductModDetailView(LoginRequiredMixin,DetailView):
     context_object_name = "product"
 
 
-class ProductDeleteView(LoginRequiredMixin,DeleteView):
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     """удаление поста"""
 
     model = Product
