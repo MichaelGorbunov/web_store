@@ -103,6 +103,10 @@ class ProductCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy("catalog:product_mod_list")
 
     def form_valid(self, form):
+        if 'allowed_publication' in form.changed_data:  # Проверка, было ли поле 'field2' изменено
+            if not self.request.user.has_perm('catalog.can_unpublish_product'):
+                return HttpResponseForbidden("Вы не можете изменять поле публикация.")
+
         product = form.save()
         user = self.request.user
         product.owners = self.request.user
@@ -116,6 +120,12 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "catalog/product_form.html"
     login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:product_mod_list")
+    def form_valid(self, form):
+        if 'allowed_publication' in form.changed_data:  # Проверка, было ли поле 'field2' изменено
+            if not self.request.user.has_perm('catalog.can_unpublish_product'):
+                return HttpResponseForbidden("Вы не можете изменять поле публикация.")
+        return super().form_valid(form)
+
 
 
 class ProductModListView(LoginRequiredMixin, ListView):
