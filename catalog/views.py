@@ -125,20 +125,37 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
     #     # Проверяем, обладает ли пользователь нужным разрешением
     #     return self.request.user.has_perm('app_name.change_yourmodel')
 
-    def get_object(self, queryset=None):
-        self.object = super().get_object(queryset)
-        if self.request.user == self.object.owners:
-            self.object.save()
-            return self.object
-        raise PermissionDenied
-        # return HttpResponseForbidden("Вы не можете изменять чужой продукт.")
-
+    # def get_object(self, queryset=None):
+    #     self.object = super().get_object(queryset)
+    #     if self.request.user == self.object.owners:
+    #         self.object.save()
+    #         return self.object
+    #     raise PermissionDenied
+    #     # return HttpResponseForbidden("Вы не можете изменять чужой продукт.")
+    #
     def form_valid(self, form):
-        if 'allowed_publication' in form.changed_data:  # Проверка, было ли поле 'field2' изменено
+        if 'allowed_publication' in form.changed_data:  # Проверка, было ли поле  изменено
             if not self.request.user.has_perm('catalog.can_unpublish_product'):
                 return HttpResponseForbidden("Вы не можете изменять поле публикация.")
 
         return super().form_valid(form)
+
+    def get(self, request, *args, **kwargs):
+        product = get_object_or_404(Product, pk=kwargs.get('pk'))
+        user = request.user
+
+        # Контрольный список на группу модератора или владельца карточки
+        perms_control = []
+        perms_control = [
+            user.has_perm('catalog.can_unpublish_product'),
+            user.pk == product.owners.pk,
+        ]
+
+        # Если есть хотя-бы что-то одно(права или владелец карточки) - изменяем
+        if not any(perms_control):
+            return HttpResponseForbidden(f'У Вас нет прав для изменения')
+
+        return super().get(self, request, *args, **kwargs)
 
 
 class ProductModListView(LoginRequiredMixin, ListView):
@@ -165,11 +182,55 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
     login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:product_mod_list")
 
-    def dispatch(self, request, *args, **kwargs):
+    # def dispatch(self, request, *args, **kwargs):
+    #
+    #     obj = Product.objects.get(pk=kwargs['pk'])
+    #     if obj.owners != request.user:
+    #         if not request.user.has_perm('catalog.delete_product'):
+    #             return HttpResponseForbidden("У вас нет разрешения на удаление этого продукта")
+    #
+    #     return super().dispatch(request, *args, **kwargs)
 
-        obj = Product.objects.get(pk=kwargs['pk'])
-        if obj.owners != request.user:
-            if not request.user.has_perm('catalog.delete_product'):
-                return HttpResponseForbidden("У вас нет разрешения на удаление этого продукта")
+    def post(self, request, *args, **kwargs):
+        product = get_object_or_404(Product, pk=kwargs.get('pk'))
+        user = request.user
 
-        return super().dispatch(request, *args, **kwargs)
+        # Контрольный список на группу модератора или владельца карточки
+        perms_control = []
+        perms_control = [
+            user.has_perm('catalog.can_unpublish_product'),
+            user.pk == product.owners.pk,
+        ]
+
+        # Если есть хотя-бы что-то одно(права или владелец карточки) - позволить удалить
+        if not any(perms_control):
+            return HttpResponseForbidden(f'У Вас нет прав для удаления')
+        product.delete()
+        return redirect('catalog:product_mod_list')
+
+
+# class ProductPublicateSwitch(LoginRequiredMixin, UpdateView):
+#     model = Product
+#     template_name = "catalog/product_switch_confirm.html"
+#     fields = []
+#
+#     def post(self, request, *args, **kwargs):
+#         product = get_object_or_404(Product, pk=kwargs.get('pk'))
+#         if not request.user.has_perm('catalog.can_unpublish_product'):
+#             return HttpResponseForbidden('У Вас нет прав для изменения')
+#         checkbox = product.checkbox
+#         if checkbox:
+#             product.checkbox = False
+#         else:
+#             product.checkbox = True
+#         product.save()
+#         return redirect("catalog:good", pk=product.pk)
+
+
+# Реализована проверка прав доступа в представлениях для редактирования.
+# Более корректным вариантом является следующий подход.
+# При редактировании, если пользователь является модератором,
+# то ему выводится только одно поле публикации для редактирования.
+# Для этого, можно переопределить метод
+# get_form_class()
+# в котором, пользователю возвращаются разные формы, в зависимости от прав
