@@ -1,7 +1,9 @@
+from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseRedirect
+from django.http import HttpResponseForbidden
 from django.conf import settings
 from django.core.mail import send_mail
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from catalog.models import Contact, Product, Category
 from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
@@ -47,7 +49,7 @@ class CategoryesListView(ListView):
     context_object_name = "categoryes"
 
 
-class CategoryCreateView(LoginRequiredMixin,CreateView):
+class CategoryCreateView(LoginRequiredMixin, CreateView):
     """создание категории продуктов"""
 
     model = Category
@@ -57,7 +59,7 @@ class CategoryCreateView(LoginRequiredMixin,CreateView):
     success_url = reverse_lazy("catalog:categoryes_list")
 
 
-class CategoryUpdateView(LoginRequiredMixin,UpdateView):
+class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     model = Category
     form_class = CategoryForm
     template_name = "catalog/category_form.html"
@@ -65,7 +67,7 @@ class CategoryUpdateView(LoginRequiredMixin,UpdateView):
     success_url = reverse_lazy("catalog:categoryes_list")
 
 
-class CategoryDeleteView(LoginRequiredMixin,DeleteView):
+class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     """удаление категории"""
 
     model = Category
@@ -74,7 +76,7 @@ class CategoryDeleteView(LoginRequiredMixin,DeleteView):
     success_url = reverse_lazy("catalog:categoryes_list")
 
 
-class ProductDetailView(LoginRequiredMixin,DetailView):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     login_url = reverse_lazy('users:login')
     template_name = "catalog/product_detail.html"
@@ -88,34 +90,65 @@ class ProductsListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        return queryset.order_by("name")  # сорт по имени
+        queryset = queryset.filter(allowed_publication=True)
+        queryset = queryset.order_by("name")
+        return queryset
 
 
-class ProductCreateView(LoginRequiredMixin,CreateView):
-
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     template_name = "catalog/product_form.html"
     login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:product_mod_list")
 
+    def form_valid(self, form):
+        if 'allowed_publication' in form.changed_data:  # Проверка, было ли поле 'field2' изменено
+            if not self.request.user.has_perm('catalog.can_unpublish_product'):
+                return HttpResponseForbidden("Вы не можете изменять поле публикация.")
 
-class ProductUpdateView(LoginRequiredMixin,UpdateView):
+        product = form.save()
+        user = self.request.user
+        product.owners = self.request.user
+        product.save()
+        return super().form_valid(form)
+
+
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
     template_name = "catalog/product_form.html"
     login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:product_mod_list")
 
+    # def test_func(self):
+    #     # Проверяем, обладает ли пользователь нужным разрешением
+    #     return self.request.user.has_perm('app_name.change_yourmodel')
 
-class ProductModListView(LoginRequiredMixin,ListView):
+    def get_object(self, queryset=None):
+        self.object = super().get_object(queryset)
+        if self.request.user == self.object.owners:
+            self.object.save()
+            return self.object
+        raise PermissionDenied
+        # return HttpResponseForbidden("Вы не можете изменять чужой продукт.")
+
+    def form_valid(self, form):
+        if 'allowed_publication' in form.changed_data:  # Проверка, было ли поле 'field2' изменено
+            if not self.request.user.has_perm('catalog.can_unpublish_product'):
+                return HttpResponseForbidden("Вы не можете изменять поле публикация.")
+
+        return super().form_valid(form)
+
+
+class ProductModListView(LoginRequiredMixin, ListView):
     model = Product
     template_name = "catalog/products_list2.html"
     login_url = reverse_lazy('users:login')
     context_object_name = "products"
 
 
-class ProductModDetailView(LoginRequiredMixin,DetailView):
+class ProductModDetailView(LoginRequiredMixin, DetailView):
     """детальное описание поста"""
 
     model = Product
@@ -124,10 +157,19 @@ class ProductModDetailView(LoginRequiredMixin,DetailView):
     context_object_name = "product"
 
 
-class ProductDeleteView(LoginRequiredMixin,DeleteView):
-    """удаление поста"""
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
+    """удаление продукта"""
 
     model = Product
     template_name = "catalog/product_confirm_delete.html"
     login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:product_mod_list")
+
+    def dispatch(self, request, *args, **kwargs):
+
+        obj = Product.objects.get(pk=kwargs['pk'])
+        if obj.owners != request.user:
+            if not request.user.has_perm('catalog.delete_product'):
+                return HttpResponseForbidden("У вас нет разрешения на удаление этого продукта")
+
+        return super().dispatch(request, *args, **kwargs)
