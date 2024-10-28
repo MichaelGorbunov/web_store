@@ -79,4 +79,3 @@ class ModeratorProductForm(ProductForm):
         fields = "__all__"
         exclude = ['owners']
         # photo = forms.ImageField(label="Изображение")
-
