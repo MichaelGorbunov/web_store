@@ -1,4 +1,5 @@
 from django.core.exceptions import PermissionDenied
+from django.forms import ModelChoiceField
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import HttpResponseForbidden
 from django.core.cache import cache
@@ -12,6 +13,8 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
+from .services import ProductService
+
 
 # from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
 from .forms import ProductForm, CategoryForm, ModeratorProductForm
@@ -189,3 +192,16 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
             return HttpResponseForbidden(f'У Вас нет прав для удаления')
         product.delete()
         return redirect('catalog:product_mod_list')
+
+
+class PrdLstView(ListView):
+    # category = ModelChoiceField(queryset=Category.objects.all())
+    # model = Product
+    template_name = "catalog/prd_list.html"
+    context_object_name = "products"
+
+
+    def get_queryset(self):
+        return ProductService.get_prod_from_cat(3)
+
+

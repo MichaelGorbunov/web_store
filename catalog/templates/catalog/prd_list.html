@@ -1,0 +1,27 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Каталог продуктов{% endblock %}
+
+{% block content %}
+<div class="row text-center">
+
+    {% for product in products %}
+        <div class="col-4">
+
+            <div class="card mb-4 box-shadow">
+                <div class="card-header">
+                    <h4 class="my-0 font-weight-normal">{{product.name}} </h4>
+                </div>
+                <div class="card-body">
+
+                    <p class="card-text">{{product.description}}</p>
+
+
+                </div>
+
+            </div>
+
+        </div>
+    {% endfor %}
+    </div>
+{% endblock %}

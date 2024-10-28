@@ -17,7 +17,7 @@ from catalog.views import (
     CategoryUpdateView,
     CategoryDeleteView,
 )
-from catalog.views import ProductModListView, ProductModDetailView, ProductDeleteView
+from catalog.views import ProductModListView, ProductModDetailView, ProductDeleteView,PrdLstView
 
 app_name = CatalogConfig.name
 
@@ -62,4 +62,6 @@ urlpatterns = [
         ProductDeleteView.as_view(),
         name="product_delete",
     ),
+
+    path("catalog/prd", PrdLstView.as_view(), name="prd_list")
 ]
