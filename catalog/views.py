@@ -11,7 +11,7 @@ from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 # from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
-from .forms import ProductForm, CategoryForm, ModeratorProductForm,MyForm
+from .forms import ProductForm, CategoryForm, ModeratorProductForm
 
 
 # Create your views here.
