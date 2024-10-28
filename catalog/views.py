@@ -205,3 +205,14 @@ class PrdLstView(ListView):
         return ProductService.get_prod_from_cat(3)
 
 
+
+def search_product(request):
+    """ search function  """
+    if request.method == "POST":
+        query_name = request.POST.get('name', None)
+        if query_name:
+            results = Product.objects.filter(name__icontains=query_name)
+            # results = Product.objects.filter(category=int(query_name))
+            return render(request, 'catalog/product-search.html', {"results":results})
+
+    return render(request, 'catalog/product-search.html')
