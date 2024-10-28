@@ -1,6 +1,7 @@
 from django.core.exceptions import PermissionDenied
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import HttpResponseForbidden
+from django.core.cache import cache
 from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
@@ -92,7 +93,10 @@ class ProductsListView(ListView):
     context_object_name = "products"
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = cache.get('products_queryset')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('products_queryset', queryset, 60 * 15)  # Кешируем данные на 15 минут
         queryset = queryset.filter(allowed_publication=True)
         queryset = queryset.order_by("name")
         return queryset
