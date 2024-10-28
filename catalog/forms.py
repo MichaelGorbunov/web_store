@@ -29,7 +29,7 @@ class ProductForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = "__all__"
-        exclude = ['owners']
+        exclude = ["owners","allowed_publication"]
         # photo = forms.ImageField(label="Изображение")
 
     def __init__(self, *args, **kwargs):
@@ -72,3 +72,11 @@ class ProductForm(forms.ModelForm):
             self.add_error("name", "Название не может содержать запрещенные слова")
         elif description and set(wrong_word_list) & set(description.lower().split()):
             self.add_error("name", "Описание не может содержать запрещенные слова")
+
+class ModeratorProductForm(ProductForm):
+    class Meta:
+        model = Product
+        fields = "__all__"
+        exclude = ['owners']
+        # photo = forms.ImageField(label="Изображение")
+
