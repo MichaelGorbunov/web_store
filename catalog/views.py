@@ -129,7 +129,7 @@ class ProductUpdateView(LoginRequiredMixin, UpdateView):
         user = request.user
 
         # Контрольный список на группу модератора или владельца карточки
-        perms_control = []
+
         perms_control = [
             user.has_perm('catalog.can_unpublish_product'),
             user.pk == product.owners.pk,
@@ -171,7 +171,7 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         user = request.user
 
         # Контрольный список на группу модератора или владельца карточки
-        perms_control = []
+
         perms_control = [
             user.has_perm('catalog.can_unpublish_product'),
             user.pk == product.owners.pk,
