@@ -9,6 +9,8 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
 
 # from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
 from .forms import ProductForm, CategoryForm, ModeratorProductForm
@@ -76,6 +78,7 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("catalog:categoryes_list")
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     login_url = reverse_lazy('users:login')

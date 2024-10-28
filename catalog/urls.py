@@ -17,7 +17,7 @@ from catalog.views import (
     CategoryUpdateView,
     CategoryDeleteView,
 )
-from catalog.views import ProductModListView, ProductModDetailView, ProductDeleteView,my_view
+from catalog.views import ProductModListView, ProductModDetailView, ProductDeleteView
 
 app_name = CatalogConfig.name
 
