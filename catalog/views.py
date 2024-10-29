@@ -194,25 +194,16 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
         return redirect('catalog:product_mod_list')
 
 
-class PrdLstView(ListView):
-    # category = ModelChoiceField(queryset=Category.objects.all())
-    # model = Product
-    template_name = "catalog/prd_list.html"
-    context_object_name = "products"
-
-
-    def get_queryset(self):
-        return ProductService.get_prod_from_cat(3)
-
-
-
 def search_product(request):
     """ search function  """
     if request.method == "POST":
         query_name = request.POST.get('name', None)
         if query_name:
-            results = Product.objects.filter(name__icontains=query_name)
-            # results = Product.objects.filter(category=int(query_name))
+            category = get_object_or_404(Category,name=query_name)
+            # results = Product.objects.filter(name__icontains=query_name)
+            # results = Product.objects.filter(category=category.pk)
+            results = ProductService.get_prod_from_cat(category.pk)
             return render(request, 'catalog/product-search.html', {"results":results})
+
 
     return render(request, 'catalog/product-search.html')
