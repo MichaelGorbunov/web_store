@@ -36,15 +36,15 @@ urlpatterns = [
     # path(
     #     "catalog/category/create", CategoryCreateView.as_view(), name="category_create"
     # ),
-    # path(
-    #     "catalog/category/<int:pk>/", CategoryUpdateView.as_view(), name="category_mod"
-    # ),
-    # path("catalog/category/all", CategoryesListView.as_view(), name="categoryes_list"),
-    # path(
-    #     "catalog/category/<int:pk>/delete/",
-    #     CategoryDeleteView.as_view(),
-    #     name="category_delete",
-    # ),
+    path(
+        "catalog/category/<int:pk>/", CategoryUpdateView.as_view(), name="category_mod"
+    ),
+    path("catalog/category/all", CategoryesListView.as_view(), name="categoryes_list"),
+    path(
+        "catalog/category/<int:pk>/delete/",
+        CategoryDeleteView.as_view(),
+        name="category_delete",
+    ),
     path("catalog/product/", ProductCreateView.as_view(), name="product_create"),
     path("catalog/product/<int:pk>/", ProductUpdateView.as_view(), name="product_mod"),
     path(

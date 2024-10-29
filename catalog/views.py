@@ -55,6 +55,9 @@ class CategoryesListView(ListView):
     context_object_name = "categoryes"
 
 
+
+
+
 class CategoryCreateView(LoginRequiredMixin, CreateView):
     """создание категории продуктов"""
 
@@ -71,6 +74,14 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     template_name = "catalog/category_form.html"
     login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:categoryes_list")
+
+    # def get_context_data(self, **kwargs):
+    #     # Получаем стандартный контекст данных из родительского класса
+    #     context = super().get_context_data(**kwargs)
+    #     cat_id = self.object.id
+    #     context['products'] = ProductService.get_prod_from_cat(cat_id)
+    #     return context
+
 
 
 class CategoryDeleteView(LoginRequiredMixin, DeleteView):
