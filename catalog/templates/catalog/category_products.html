@@ -3,6 +3,9 @@
 {% block title %}Контакты{% endblock %}
 
 {% block content %}
+
+   <div class="row text-left">
+        <div class="col-5 ">
 <h1>Продукты в категориях</h1>
 
     <form method="get">
@@ -20,4 +23,6 @@
     {% elif products is not None %}
         <p>Нет продуктов в этой категории</p>
     {% endif %}
+     </div>
+   </div>
 {% endblock %}
