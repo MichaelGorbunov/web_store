@@ -1,5 +1,7 @@
 # services.py
 from .models import Product,Category
+from django.conf import settings
+from django.core.cache import cache
 
 
 class ProductService:
@@ -17,7 +19,16 @@ class ProductService:
     @staticmethod
     def get_product_by_category(category):
         """продукты в категории"""
-        return Product.objects.filter(category=category)
+        if settings.CACHES_ENABLED:
+            key = "products"
+            products=cache.get(key)
+            if products is None:
+                products=Product.objects.all()
+                cache.set(key, products, 3600)
+        else:
+            products = Product.objects.get.all()
+
+        return products.filter(category=category)
 
 
 

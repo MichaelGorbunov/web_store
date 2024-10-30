@@ -94,3 +94,12 @@ class CategoriesSelectForm(forms.Form):
         label='Выбор категории',
         required=True
     )
+
+    def __init__(self, *args, **kwargs):
+        super(CategoriesSelectForm, self).__init__(*args, **kwargs)
+        # for field_name in self.fields:
+        #     self.fields[field_name].help_text = ""
+
+        self.fields["category"].widget.attrs.update(
+            {"class": "form-select"}
+        )
