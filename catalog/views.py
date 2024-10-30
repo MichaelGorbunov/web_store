@@ -14,6 +14,8 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.decorators.cache import cache_page
 from django.utils.decorators import method_decorator
 from .services import ProductService
+from .forms import CategoriesSelectForm
+
 
 
 # from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
@@ -53,9 +55,6 @@ class CategoryesListView(ListView):
     model = Category
     template_name = "catalog/categoryes_list.html"
     context_object_name = "categoryes"
-
-
-
 
 
 class CategoryCreateView(LoginRequiredMixin, CreateView):
@@ -218,3 +217,17 @@ def search_product(request):
 
 
     return render(request, 'catalog/product-search.html')
+
+
+def Сategory_products_view(request):
+    form = CategoriesSelectForm(request.GET or None)
+    products = None
+
+    if form.is_valid() and form.cleaned_data['category']:
+        selected_category = form.cleaned_data['category']
+        products = ProductService.get_product_by_category(selected_category)  # Use the service function here
+
+    return render(request, 'catalog/category_products.html', {
+        'form': form,
+        'products': products,
+    })

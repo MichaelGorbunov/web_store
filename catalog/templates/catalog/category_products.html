@@ -1,0 +1,23 @@
+{% extends 'catalog/base.html' %}
+
+{% block title %}Контакты{% endblock %}
+
+{% block content %}
+<h1>Продукты в категориях</h1>
+
+    <form method="get">
+        {{ form.as_p }}
+        <button type="submit">Вывод продуктов</button>
+    </form>
+
+    {% if products %}
+        <h2>Продукты в категории "{{ form.cleaned_data.category.name }}"</h2>
+        <ul>
+            {% for product in products %}
+                <li>{{ product.name }}</li>
+            {% endfor %}
+        </ul>
+    {% elif products is not None %}
+        <p>Нет продуктов в этой категории</p>
+    {% endif %}
+{% endblock %}
