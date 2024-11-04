@@ -172,3 +172,12 @@ WRONG_WORDS_LIST = [
 AUTH_USER_MODEL = 'users.CustomUser'
 # LOGIN_REDIRECT_URL = '/catalog/'
 # LOGOUT_REDIRECT_URL = '/catalog/'
+
+CACHES_ENABLED = True
+if CACHES_ENABLED:
+    CACHES = {
+        'default': {
+            'BACKEND': 'django.core.cache.backends.redis.RedisCache',
+            'LOCATION': os.getenv('REDIS_LOCATION')
+        }
+    }

@@ -3,14 +3,17 @@ from django import forms
 from .models import Product, Category
 from django.conf import settings
 from django.core.exceptions import ValidationError
+from .services import ProductService
 
 wrong_word_list = settings.WRONG_WORDS_LIST
 
 
 class CategoryForm(forms.ModelForm):
+    country = forms.ModelChoiceField(queryset=Category.objects.all())
     class Meta:
         model = Category
         fields = "__all__"
+
 
     def __init__(self, *args, **kwargs):
         super(CategoryForm, self).__init__(*args, **kwargs)
@@ -23,6 +26,7 @@ class CategoryForm(forms.ModelForm):
         self.fields["description"].widget.attrs.update(
             {"class": "form-control", "placeholder": "Введите описание"}
         )
+
 
 
 class ProductForm(forms.ModelForm):
@@ -79,3 +83,23 @@ class ModeratorProductForm(ProductForm):
         fields = "__all__"
         exclude = ['owners']
         # photo = forms.ImageField(label="Изображение")
+
+
+
+
+
+class CategoriesSelectForm(forms.Form):
+    category = forms.ModelChoiceField(
+        queryset=ProductService.get_all_categories(),
+        label='Выбор категории',
+        required=True
+    )
+
+    def __init__(self, *args, **kwargs):
+        super(CategoriesSelectForm, self).__init__(*args, **kwargs)
+        # for field_name in self.fields:
+        #     self.fields[field_name].help_text = ""
+
+        self.fields["category"].widget.attrs.update(
+            {"class": "form-select"}
+        )

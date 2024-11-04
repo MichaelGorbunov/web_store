@@ -17,7 +17,7 @@ from catalog.views import (
     CategoryUpdateView,
     CategoryDeleteView,
 )
-from catalog.views import ProductModListView, ProductModDetailView, ProductDeleteView,my_view
+from catalog.views import ProductModListView, ProductModDetailView, ProductDeleteView,search_product,Сategory_products_view
 
 app_name = CatalogConfig.name
 
@@ -36,15 +36,15 @@ urlpatterns = [
     # path(
     #     "catalog/category/create", CategoryCreateView.as_view(), name="category_create"
     # ),
-    # path(
-    #     "catalog/category/<int:pk>/", CategoryUpdateView.as_view(), name="category_mod"
-    # ),
-    # path("catalog/category/all", CategoryesListView.as_view(), name="categoryes_list"),
-    # path(
-    #     "catalog/category/<int:pk>/delete/",
-    #     CategoryDeleteView.as_view(),
-    #     name="category_delete",
-    # ),
+    path(
+        "catalog/category/<int:pk>/", CategoryUpdateView.as_view(), name="category_mod"
+    ),
+    path("catalog/category/all", CategoryesListView.as_view(), name="categoryes_list"),
+    path(
+        "catalog/category/<int:pk>/delete/",
+        CategoryDeleteView.as_view(),
+        name="category_delete",
+    ),
     path("catalog/product/", ProductCreateView.as_view(), name="product_create"),
     path("catalog/product/<int:pk>/", ProductUpdateView.as_view(), name="product_mod"),
     path(
@@ -62,4 +62,8 @@ urlpatterns = [
         ProductDeleteView.as_view(),
         name="product_delete",
     ),
+
+
+    path("catalog/search", views.search_product, name="search"),
+    path('catalog/product_in_category', views.Сategory_products_view, name='category_products_view'),
 ]

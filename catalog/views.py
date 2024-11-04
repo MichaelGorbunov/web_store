@@ -1,6 +1,8 @@
 from django.core.exceptions import PermissionDenied
+from django.forms import ModelChoiceField
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http import HttpResponseForbidden
+from django.core.cache import cache
 from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import render, get_object_or_404, redirect
@@ -9,6 +11,12 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import DetailView, ListView, TemplateView
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.decorators.cache import cache_page
+from django.utils.decorators import method_decorator
+from .services import ProductService
+from .forms import CategoriesSelectForm
+
+
 
 # from config.settings import RECIPIENTS_EMAIL, DEFAULT_FROM_EMAIL
 from .forms import ProductForm, CategoryForm, ModeratorProductForm
@@ -66,6 +74,14 @@ class CategoryUpdateView(LoginRequiredMixin, UpdateView):
     login_url = reverse_lazy('users:login')
     success_url = reverse_lazy("catalog:categoryes_list")
 
+    # def get_context_data(self, **kwargs):
+    #     # Получаем стандартный контекст данных из родительского класса
+    #     context = super().get_context_data(**kwargs)
+    #     cat_id = self.object.id
+    #     context['products'] = ProductService.get_prod_from_cat(cat_id)
+    #     return context
+
+
 
 class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     """удаление категории"""
@@ -76,6 +92,7 @@ class CategoryDeleteView(LoginRequiredMixin, DeleteView):
     success_url = reverse_lazy("catalog:categoryes_list")
 
 
+@method_decorator(cache_page(60 * 15), name='dispatch')
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
     login_url = reverse_lazy('users:login')
@@ -89,7 +106,10 @@ class ProductsListView(ListView):
     context_object_name = "products"
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = cache.get('products_queryset')
+        if not queryset:
+            queryset = super().get_queryset()
+            cache.set('products_queryset', queryset, 60 * 15)  # Кешируем данные на 15 минут
         queryset = queryset.filter(allowed_publication=True)
         queryset = queryset.order_by("name")
         return queryset
@@ -182,3 +202,32 @@ class ProductDeleteView(LoginRequiredMixin, DeleteView):
             return HttpResponseForbidden(f'У Вас нет прав для удаления')
         product.delete()
         return redirect('catalog:product_mod_list')
+
+
+def search_product(request):
+    """ search function  """
+    if request.method == "POST":
+        query_name = request.POST.get('name', None)
+        if query_name:
+            category = get_object_or_404(Category,name=query_name)
+            # results = Product.objects.filter(name__icontains=query_name)
+            # results = Product.objects.filter(category=category.pk)
+            results = ProductService.get_prod_from_cat(category.pk)
+            return render(request, 'catalog/product-search.html', {"results":results})
+
+
+    return render(request, 'catalog/product-search.html')
+
+
+def Сategory_products_view(request):
+    form = CategoriesSelectForm(request.GET or None)
+    products = None
+
+    if form.is_valid() and form.cleaned_data['category']:
+        selected_category = form.cleaned_data['category']
+        products = ProductService.get_product_by_category(selected_category)  # Use the service function here
+
+    return render(request, 'catalog/category_products.html', {
+        'form': form,
+        'products': products,
+    })
